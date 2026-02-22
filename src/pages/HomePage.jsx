@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SiteHeader from '../components/SiteHeader'
 import SiteFooter from '../components/SiteFooter'
 import { fetchCategories, fetchCourses } from '../services/catalogApi'
+import { addCourseToCart } from '../services/orderApi'
 
 const fallbackCategories = [
   { id: 1, nombre: 'Art & Design' },
@@ -28,6 +29,7 @@ function HomePage() {
   const [categories, setCategories] = useState([])
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
+  const [status, setStatus] = useState({ type: '', message: '' })
   const user = useMemo(() => {
     try {
       return JSON.parse(localStorage.getItem('auth_user') || 'null')
@@ -51,6 +53,20 @@ function HomePage() {
 
     loadData()
   }, [])
+
+  const handleAddToCart = async (courseId) => {
+    if (!user) {
+      setStatus({ type: 'error', message: 'Inicia sesion para agregar cursos al carrito.' })
+      return
+    }
+
+    try {
+      await addCourseToCart(courseId)
+      setStatus({ type: 'success', message: 'Curso agregado al carrito.' })
+    } catch (error) {
+      setStatus({ type: 'error', message: error.message })
+    }
+  }
 
   return (
     <div className="page">
@@ -77,6 +93,8 @@ function HomePage() {
       </section>
 
       <main className="container home-main">
+        {status.message && <p className={`status ${status.type}`}>{status.message}</p>}
+
         <section className="section-head">
           <div>
             <h2>Top Categories</h2>
@@ -113,7 +131,15 @@ function HomePage() {
                 </div>
                 <div className="course-row price-row">
                   <strong>${Number(course.precio ?? 0).toFixed(2)}</strong>
-                  <button type="button">View More</button>
+                  {user ? (
+                    <button type="button" onClick={() => handleAddToCart(course.id)}>
+                      Agregar al carrito
+                    </button>
+                  ) : (
+                    <Link to="/auth" className="inline-link">
+                      Iniciar sesion
+                    </Link>
+                  )}
                 </div>
               </div>
             </article>
@@ -148,4 +174,3 @@ function HomePage() {
 }
 
 export default HomePage
-

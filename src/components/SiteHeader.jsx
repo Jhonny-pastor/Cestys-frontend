@@ -23,6 +23,11 @@ function SiteHeader({ user }) {
           </NavLink>
           <a href="#cursos">Cursos</a>
           <a href="#blog">Blog</a>
+          {user && (
+            <NavLink to="/cart" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Carrito
+            </NavLink>
+          )}
           {!user && (
             <NavLink to="/auth" className={({ isActive }) => (isActive ? 'active' : '')}>
               Login / Register
