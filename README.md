@@ -1,16 +1,86 @@
-# React + Vite
+# CESTYS Frontend (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend web con:
+- pagina principal (`/`)
+- autenticacion (`/auth`)
+- carrito y checkout simulado (`/cart`)
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 18+
+- npm
 
-## React Compiler
+## Instalacion
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Entrar al frontend:
+```bash
+cd frontend
+```
 
-## Expanding the ESLint configuration
+2. Instalar dependencias:
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. Crear archivo `.env` (opcional, recomendado):
+```bash
+echo VITE_API_URL=http://127.0.0.1:8000/api/v1 > .env
+```
+
+4. Levantar en desarrollo:
+```bash
+npm run dev
+```
+
+5. Abrir en navegador:
+- normalmente `http://localhost:5173`
+
+## Scripts
+
+Desarrollo:
+```bash
+npm run dev
+```
+
+Build:
+```bash
+npm run build
+```
+
+Lint:
+```bash
+npm run lint
+```
+
+Preview de build:
+```bash
+npm run preview
+```
+
+## Estructura principal
+
+- `src/pages/HomePage.jsx`: landing con categorias y cursos
+- `src/pages/AuthPage.jsx`: login/register
+- `src/pages/CartPage.jsx`: carrito, orden y pago simulado
+- `src/services/authApi.js`: auth API
+- `src/services/catalogApi.js`: catalogo API
+- `src/services/orderApi.js`: carrito/ordenes/pagos API
+- `src/components/SiteHeader.jsx` y `src/components/SiteFooter.jsx`
+
+## Flujo funcional
+
+1. Ingresar a `/` (pagina principal).
+2. Ir a `/auth` para iniciar sesion o registrarse.
+3. Volver a `/` y agregar cursos al carrito.
+4. Ir a `/cart`.
+5. Ejecutar `Pagar (simulado)`.
+6. Ver orden en `PAID` y matricula generada en backend.
+
+## Nota de integracion con backend
+
+El backend debe estar corriendo en:
+- `http://127.0.0.1:8000`
+
+Si usas otra URL o puerto, ajusta:
+- `VITE_API_URL` en `.env`
+
